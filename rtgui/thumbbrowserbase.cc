@@ -71,20 +71,24 @@ void ThumbBrowserBase::scrollChanged ()
 void ThumbBrowserBase::scroll (int direction)
 {
     // GUI already acquired when here
-    if (arrangement == TB_Vertical) {
-        vscroll.set_value (vscroll.get_value() + (direction == GDK_SCROLL_DOWN ? +1 : -1) * vscroll.get_adjustment()->get_step_increment());
-    } else {
-        hscroll.set_value (hscroll.get_value() + (direction == GDK_SCROLL_DOWN ? +1 : -1) * hscroll.get_adjustment()->get_step_increment());
+    if (direction == GDK_SCROLL_UP || direction == GDK_SCROLL_DOWN) {
+        if (arrangement == TB_Vertical) {
+            vscroll.set_value (vscroll.get_value() + (direction == GDK_SCROLL_UP ? -1 : 1) * vscroll.get_adjustment()->get_step_increment());
+        } else {
+            hscroll.set_value (hscroll.get_value() + (direction == GDK_SCROLL_UP ? -1 : 1) * hscroll.get_adjustment()->get_step_increment());
+        }
     }
 }
 
 void ThumbBrowserBase::scrollPage (int direction)
 {
     // GUI already acquired when here
-    if (arrangement == TB_Vertical) {
-        vscroll.set_value (vscroll.get_value() + (direction == GDK_SCROLL_DOWN ? +1 : -1) * vscroll.get_adjustment()->get_page_increment());
-    } else {
-        hscroll.set_value (hscroll.get_value() + (direction == GDK_SCROLL_DOWN ? +1 : -1) * hscroll.get_adjustment()->get_page_increment());
+    if (direction == GDK_SCROLL_UP || direction == GDK_SCROLL_DOWN) {
+        if (arrangement == TB_Vertical) {
+            vscroll.set_value (vscroll.get_value() + (direction == GDK_SCROLL_UP ? -1 : 1) * vscroll.get_adjustment()->get_page_increment());
+        } else {
+            hscroll.set_value (hscroll.get_value() + (direction == GDK_SCROLL_UP ? -1 : 1) * hscroll.get_adjustment()->get_page_increment());
+        }
     }
 }
 
@@ -915,7 +919,6 @@ bool ThumbBrowserBase::Internal::on_motion_notify_event (GdkEventMotion* event)
 bool ThumbBrowserBase::Internal::on_scroll_event (GdkEventScroll* event)
 {
     // Gtk signals automatically acquire the GUI (i.e. this method is enclosed by gdk_thread_enter and gdk_thread_leave)
-
     parent->scroll (event->direction);
     return true;
 }
